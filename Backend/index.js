@@ -28,7 +28,7 @@ async function runprompt(mssg) {
         console.log({ error: error.message })
     }
 }
-
+//converting code
 app.post('/convert', async (req, res) => {
     let { code, language } = req.body;
     try {
@@ -39,6 +39,16 @@ app.post('/convert', async (req, res) => {
     }
 })
 
+//debugging the code
+app.post('/debug',async(req,res)=>{
+    let {code}=req.body;
+    try {
+       let response = await runprompt(`debug the ${code} check what is the error in the code give the way to rewrite or correct it`);
+       res.send(response); 
+    } catch (error) {
+        res.send({error:error.message})
+    }
+})
 app.listen(process.env.port, () => {
     console.log("listening on port " + process.env.port);
 })
