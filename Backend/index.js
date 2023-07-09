@@ -49,6 +49,17 @@ app.post('/debug',async(req,res)=>{
         res.send({error:error.message})
     }
 })
+
+//checking quality
+app.post('/quality',async(req,res)=>{
+    let {code} = req.body;
+    try {
+        let response = await runprompt(`check the quality of ${code} and give explaination briefly and provide score according to quality and methods to improve`)
+        res.send(response)
+    } catch (error) {
+        res.send({error:error.message})
+    }
+})
 app.listen(process.env.port, () => {
     console.log("listening on port " + process.env.port);
 })
