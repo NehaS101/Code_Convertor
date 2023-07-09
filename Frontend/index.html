@@ -1,18 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Convertor</title>
     <style>
-
+        #main{
+            width: 60%;
+            margin: auto;
+            background-color:rgb(21, 21, 63) ;
+            text-align: center;
+            padding: 10px   ;
+            color: white;
+        }
+        #input{
+            width: 70%;
+            margin: auto;
+        }
+        #code{
+            width: 70%;
+            height: 500px;
+            font-size: 25px;
+        }
+        button{
+            font-size: 25px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            margin-right: 15px;
+            padding: 5px;
+        }
+        #output{
+            width: 50%;
+            margin: auto;
+            height: 400px;
+            font-size: 25px;
+            padding: 5px;
+            background-color: white;
+        }
+        #language{
+            width: 48.5%;
+            height:40px;
+            padding:5px;
+            font-size: 20px;
+        }
     </style>
 </head>
+
 <body>
     <div id="main">
         <h1>Code Convertor</h1>
         <div id="input">
-            <input type="text" placeholder="write your code to convert">
+            <textarea id="code" cols="60" rows="30"></textarea>
+        </div>
+        <div id="lang">
+            <input type="text" id="language" placeholder="Enter language to convert code">
         </div>
         <div id="buttons">
             <button id="convert">Convert</button>
@@ -21,10 +64,33 @@
         </div>
         <div id="output"></div>
     </div>
-    
-    
-    <script>
 
+    <script>
+        let code = document.getElementById("code").value;
+        let language = document.getElementById("language").value;
+        let convert = document.getElementById("convert");
+        let debug = document.getElementById("debug");
+        let quality = document.getElementById("quality");
+        let output = document.getElementById("output");
+
+        let url = `http://localhost:3800/`
+        output.innerHTML=""
+        convert.addEventListener("onclick",async()=>{
+            let response = await fetch(`url${convert}`,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                },
+                body:JSON.stringify({
+                    code,language
+                })
+            })
+            let data = await response.json();
+            let result = data.response;
+            console.log(result);
+            output.innerHTML=`<pre>${result}</pre>`;
+        })
     </script>
 </body>
+
 </html>
