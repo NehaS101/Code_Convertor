@@ -38,6 +38,7 @@
             font-size: 25px;
             padding: 5px;
             background-color: white;
+            color: black;
         }
         #language{
             width: 48.5%;
@@ -58,7 +59,7 @@
             <input type="text" id="language" placeholder="Enter language to convert code">
         </div>
         <div id="buttons">
-            <button id="convert">Convert</button>
+            <button id="convert" onclick="convertcode()">Convert</button>
             <button id="debug">Debug</button>
             <button id="quality">Check Quality</button>
         </div>
@@ -66,30 +67,42 @@
     </div>
 
     <script>
-        let code = document.getElementById("code").value;
-        let language = document.getElementById("language").value;
+        let code = document.getElementById("code");
+        let language = document.getElementById("language");
         let convert = document.getElementById("convert");
         let debug = document.getElementById("debug");
         let quality = document.getElementById("quality");
         let output = document.getElementById("output");
 
-        let url = `http://localhost:3800/`
-        output.innerHTML=""
-        convert.addEventListener("onclick",async()=>{
-            let response = await fetch(`url${convert}`,{
+        let url = `http://localhost:3800/`;
+        // output.innerHTML="";
+        
+        async function convertcode(){
+            let codes = code.value;
+            let lang=language.value;
+            // console.log(codes,lang)
+            let response = await fetch(`${url}convert`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json",
                 },
                 body:JSON.stringify({
-                    code,language
+                    code:codes,
+                    language:lang
                 })
             })
-            let data = await response.json();
-            let result = data.response;
-            console.log(result);
-            output.innerHTML=`<pre>${result}</pre>`;
-        })
+                console.log(response);
+                if(response.ok)
+                {
+                    let data=await response.json();
+                    console.log(data.response);
+                    output.innerText=data.response;
+                }
+                else{
+                    return error;
+                }
+
+        }
     </script>
 </body>
 
