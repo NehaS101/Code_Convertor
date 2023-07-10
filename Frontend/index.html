@@ -34,8 +34,8 @@
         #output{
             width: 50%;
             margin: auto;
-            height: 400px;
-            font-size: 25px;
+            height: 500px;
+            font-size: 20px;
             padding: 5px;
             background-color: white;
             color: black;
@@ -61,7 +61,7 @@
         <div id="buttons">
             <button id="convert" onclick="convertcode()">Convert</button>
             <button id="debug" onclick="debugcode()">Debug</button>
-            <button id="quality">Check Quality</button>
+            <button id="quality" onclick="qualitycheck()">Check Quality</button>
         </div>
         <div id="output"></div>
     </div>
@@ -125,6 +125,24 @@
            }else{
             console.log(error);
            }
+        }
+
+        //for check quality
+        async function qualitycheck(){
+            let codes = code.value;
+            console.log(codes)
+            let response = await fetch(`${url}quality`,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                },
+                body:JSON.stringify({
+                    code:codes
+                })
+            })
+            let data = await response.json()
+            console.log(data)
+            output.innerText=data.response
         }
     </script>
 </body>
