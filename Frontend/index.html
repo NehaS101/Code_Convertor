@@ -60,7 +60,7 @@
         </div>
         <div id="buttons">
             <button id="convert" onclick="convertcode()">Convert</button>
-            <button id="debug">Debug</button>
+            <button id="debug" onclick="debugcode()">Debug</button>
             <button id="quality">Check Quality</button>
         </div>
         <div id="output"></div>
@@ -77,6 +77,7 @@
         let url = `http://localhost:3800/`;
         // output.innerHTML="";
         
+        //for converting code into another language
         async function convertcode(){
             let codes = code.value;
             let lang=language.value;
@@ -102,6 +103,28 @@
                     return error;
                 }
 
+        }
+
+        //for debugging
+        async function debugcode(){
+           let codes = code.value;
+           console.log(codes)
+           let response = await fetch(`${url}debug`,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json" 
+            },
+            body:JSON.stringify({
+                code:codes
+            })
+           })
+           if(response.ok==true){
+           let data = await response.json();
+           console.log(data.response);
+           output.innerText=data.response;
+           }else{
+            console.log(error);
+           }
         }
     </script>
 </body>
