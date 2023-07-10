@@ -31,9 +31,10 @@ async function runprompt(mssg) {
 //converting code
 app.post('/convert', async (req, res) => {
     let { code, language } = req.body;
+    console.log(req.body)
     try {
         let response = await runprompt(`convert the ${code} into ${language}`);
-        res.send(response);
+        res.json({response});
     } catch (error) {
         res.send({ error: error.message });
     }
@@ -44,7 +45,7 @@ app.post('/debug',async(req,res)=>{
     let {code}=req.body;
     try {
        let response = await runprompt(`debug the ${code} check what is the error in the code give the way to rewrite or correct it`);
-       res.send(response); 
+       res.json({response}); 
     } catch (error) {
         res.send({error:error.message})
     }
@@ -55,7 +56,7 @@ app.post('/quality',async(req,res)=>{
     let {code} = req.body;
     try {
         let response = await runprompt(`check the quality of ${code} and give explaination briefly and provide score according to quality and methods to improve`)
-        res.send(response)
+        res.json({response})
     } catch (error) {
         res.send({error:error.message})
     }
